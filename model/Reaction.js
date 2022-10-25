@@ -1,4 +1,5 @@
 const { Schema, Types } = require('mongoose');
+const dateDisplay = require('../utils/dateDisplay')
 
 const reactionSchema = new Schema(
     {
@@ -18,8 +19,9 @@ const reactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now
-        }
+            default: Date.now,
+            get: dateDisplay
+          }
     },
     {
       toJSON: {
