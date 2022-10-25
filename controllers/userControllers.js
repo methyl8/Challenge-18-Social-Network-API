@@ -1,4 +1,5 @@
 const User = require('../model/User')
+const { ObjectId } = require('mongoose').Types;
 
 
 module.exports = {
@@ -18,15 +19,19 @@ module.exports = {
             email:
         */
         User.create(req.body)
-        .then((user) => res.status(200).json(user))
+        .then((user) =>  res.status(200).json(user))
         .catch((err) => res.status(500).json(err));
   
     },
 
     getOneUser(req, res) {
         //get one user
-        User.findOne({ _id: req.params.userid })
-            .then((user) => res.status(200).json(user))
+        User.findOne({ _id: ObjectId(req.params.userId) })
+        .then((user) => {
+            !user 
+                ? res.status(404).json({message: 'User not found'})
+                : res.status(200).json(user)
+            })
             .catch((err) => res.status(500).json(err));
     },
 
@@ -36,28 +41,28 @@ module.exports = {
             username:
             email:
         */
-        User.findOneAndUpdate({ _id: req.params.userId}, {$set: req.body}, {new: true})
+        User.findOneAndUpdate({ _id: ObjectId(req.params.userId)}, {$set: req.body}, {new: true})
         .then((result) => res.status(200).json(result))
         .catch((err) => res.status(500).json(err))
     },
 
     deleteUser(req, res) {
         //delete :userId
-        User.deleteOne({ _id: req.params.userId }, {new: true})
+        User.deleteOne({ _id: ObjectId(req.params.userId) }, {new: true})
         .then((result) => res.status(200).json(result))
         .catch((err) => res.status(500).json(err))
     },
 
     addFriend(req, res) {
         //add :friendId to :userId
-        User.findOneAndUpdate({ _id: req.params.userId }, {$push:{friends: req.params.friendId}}, {new: true})
+        User.findOneAndUpdate({_id: ObjectId(req.params.userId) }, {$push:{friends: req.params.friendId}}, {new: true})
         .then((result) => res.status(200).json(result))
         .catch((err) => res.status(500).json(err))
     },
 
     deleteFriend(req, res) {
         //delete :friendId from :userId
-        User.findOneAndUpdate({_id: req.params.userId }, {$pull: {friends: req.params.friendId}}, {new: true})
+        User.findOneAndUpdate({_id: ObjectId(req.params.userId) }, {$pull: {friends: req.params.friendId}}, {new: true})
         .then((result) => res.status(200).json(result))
         .catch((err) => res.status(500).json(err))
     }
