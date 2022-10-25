@@ -9,6 +9,13 @@ module.exports = {
     },
     addThought(req, res) {
         //add thought
+        /*body
+            thoughtTest:
+            username:
+        */
+       Thought.create(req.body)
+       .then((result) => res.json(result))
+       .catch((err) => res.json(err))
     },
     getOneThought(req, res) {
         //get one thought

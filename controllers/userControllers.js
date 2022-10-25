@@ -16,8 +16,6 @@ module.exports = {
         /* body:
             username:
             email:
-            thoughts: []
-            friends: []
         */
         User.create(req.body)
         .then((user) => res.status(200).json(user))
@@ -34,11 +32,9 @@ module.exports = {
 
     updateUser(req, res) {
         //update :userId
-                /* body:
+        /* body:
             username:
             email:
-            thoughts: []
-            friends: []
         */
         User.findOneAndUpdate({ _id: req.params.userId}, {$set: req.body}, {new: true})
         .then((result) => res.status(200).json(result))
