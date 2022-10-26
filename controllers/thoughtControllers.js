@@ -16,7 +16,6 @@ module.exports = {
             username:
             userId:
         */
-            // User.findOne({ _id: ObjectId(req.body.userId) })
             Thought.create(req.body)
             .then(async (result) => {
                 const updatedUser = await User.findOneAndUpdate({ _id: ObjectId(req.body.userId) }, { $addToSet: { thoughts: result._id } }, {new: true})
